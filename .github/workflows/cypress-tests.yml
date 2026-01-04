@@ -1,0 +1,113 @@
+name: Cypress Tests
+
+on:
+  schedule:
+    - cron: '0 9 * * 1-5' # Run tests every weekday at 9:00 AM UTC
+  workflow_dispatch:
+
+jobs:
+  cypress-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2, 3]
+
+    name: Cypress Tests - Container ${{ matrix.containers }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          config: viewportWidth=1280,viewportHeight=720
+        env:
+          CYPRESS_baseUrl: https://www.saucedemo.com
+
+      - name: Upload JSON Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-json-report-${{ matrix.containers }}
+          path: cypress/reports/html/*.json
+          retention-days: 2
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots-${{ matrix.containers }}
+          path: cypress/screenshots
+          retention-days: 2
+          if-no-files-found: ignore
+
+      - name: Upload videos
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos-${{ matrix.containers }}
+          path: cypress/videos
+          retention-days: 2
+          if-no-files-found: ignore
+
+  merge-reports:
+    runs-on: ubuntu-latest
+    needs: cypress-tests
+    if: always()
+    name: Merge Reports and Deploy
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download JSON Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: cypress-json-report-*
+          path: reports/json
+
+      - name: Merge JSON Reports
+        run: |
+          mkdir -p cypress/reports/html cypress/html
+          npx mochawesome-merge "reports/json/**/*.json" > cypress/reports/html/index.json
+
+      - name: Generate Unified HTML Report
+        run: |
+          npx marge cypress/reports/html/index.json --reportDir cypress/html --reportFilename index_${{ github.run_number }}.html
+
+      - name: Deploy Unified Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: cypress/html
+          keep_files: true
+
+      - name: Send to Slack
+        if: always()
+        run: |
+          npm install axios
+          node ./scripts/send_slack_message.js
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          MOCHAWESOME_REPORT_PATH: cypress/reports/html/index.json
+          BROWSER: chrome
+          VIEWPORT: 1280x720
+          GITHUB_ACTOR: ${{ github.actor }}

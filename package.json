@@ -1,0 +1,56 @@
+{
+  "name": "cypress-automation-saucedemo",
+  "version": "1.0.0",
+  "description": "Cypress Test Automation Framework for SauceDemo with Page Object Model",
+  "main": "index.js",
+  "keywords": [
+    "cypress",
+    "saucedemo",
+    "test-automation",
+    "page-object-model"
+  ],
+  "author": "ozcan",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:chrome": "npm run clean-reports && cypress run --browser chrome",
+    "cy:firefox": "cypress run --browser firefox",
+    "cy:electron": "cypress run --browser electron",
+    "cy:mobile": "cypress run --config viewportWidth=375,viewportHeight=667",
+    "cy:tablet": "cypress run --config viewportWidth=768,viewportHeight=1024",
+    "cy:desktop": "cypress run --config viewportWidth=1280,viewportHeight=720",
+    "clean-reports": "rm -rf cypress/reports/html/* cypress/screenshots cypress/videos || true",
+    "test:all": "npm run clean-reports && cypress run --browser chrome",
+    "format": "prettier --write \"cypress/**/*.js\" \"*.json\" \"*.md\"",
+    "format:check": "prettier --check \"cypress/**/*.js\" \"*.json\" \"*.md\"",
+    "send-slack": "node scripts/send_slack_message.js",
+    "lint": "eslint --quiet",
+    "lint:fix": "eslint --fix",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint",
+      "prettier --check"
+    ]
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "cypress": "^15.8.1",
+    "cypress-mochawesome-reporter": "^3.8.2",
+    "cypress-multi-reporters": "^1.6.4",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.3.0",
+    "mochawesome-report-generator": "^6.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-no-only-tests": "^2.6.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.3",
+    "prettier": "^3.3.3"
+  }
+}

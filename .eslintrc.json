@@ -1,0 +1,23 @@
+{
+  "extends": ["airbnb-base", "plugin:cypress/recommended"],
+  "plugins": ["cypress", "no-only-tests"],
+  "env": {
+    "cypress/globals": true,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "no-only-tests/no-only-tests": "error",
+    "cypress/no-unnecessary-waiting": "warn",
+    "no-console": "off",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "func-names": "off",
+    "prefer-arrow-callback": "off",
+    "object-shorthand": "off",
+    "comma-dangle": ["error", "only-multiline"],
+    "linebreak-style": "off",
+    "operator-linebreak": "off",
+    "implicit-arrow-linebreak": "off"
+  }
+}
