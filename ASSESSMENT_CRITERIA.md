@@ -229,7 +229,7 @@ cy.getProductPrices().then((prices) => {
 
 ---
 
-## 💻 4. Code Quality 
+## 4. Code Quality 
 
 ### ✅ Readability and Organization 
 

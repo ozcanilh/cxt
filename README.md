@@ -88,7 +88,8 @@ cxt/
 │   ├── support/
 │   │   ├── commands/                # Custom Cypress commands
 │   │   │   ├── general_commands.js  # Generic reusable commands
-│   │   │   └── saucedemo_commands.js # App-specific commands
+│   │   │   ├── login_commands.js    # Login-specific commands
+│   │   │   └── inventory_commands.js # Inventory-specific commands
 │   │   └── e2e.js                   # Cypress configuration and imports
 │   └── videos/                      # Test execution videos (generated)
 ├── .prettierrc                      # Prettier configuration
