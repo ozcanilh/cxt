@@ -426,7 +426,7 @@ View Details on GitHub Actions
 ```
 ---
 
-## 🔄 CI/CD Integration
+## CI/CD Integration
 
 ### GitHub Actions
 
@@ -505,7 +505,7 @@ You can manually trigger the workflow from GitHub:
 -  Directly impacts purchase decisions
 - users rely on sorting/filtering
 - higher conversion with effective sorting
-- 📱 Must be responsive across devices
+-  Must be responsive across devices
 
 ### Testing Approach
 
@@ -531,27 +531,5 @@ You can manually trigger the workflow from GitHub:
 | `cy.verifyText()`     | Verify element text    | `cy.verifyText('.title', 'Products')`             |
 | `cy.verifyElement()`  | Verify element exists  | `cy.verifyElement('.inventory_list')`             |
 | `cy.selectDropdown()` | Select dropdown option | `cy.selectDropdown('[data-test="sort"]', 'lohi')` |
-
----
-
-## Contributing
-
-### Code Standards
-
-1. **Follow Page Object Model pattern**
-2. **Use custom commands for reusability**
-3. **Add test context with `cy.addContextTest()`**
-4. **No hardcoded waits (`cy.wait()` with time)**
-5. **Format code with Prettier before committing**
-
-### Adding New Tests
-
-1. Create page object in `cypress/e2e/pages/` if needed
-2. Add custom commands in `cypress/support/commands/`
-3. Write test in `cypress/e2e/tests/`
-4. Follow naming convention: `[feature].cy.js`
-5. Add test context and rationale
-6. Format code: `npm run format`
-7. Run tests: `npm run cy:run`
 
 ---
