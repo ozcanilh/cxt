@@ -18,24 +18,6 @@ Cypress.Commands.add('sortProducts', (sortOption) => {
 
 /**
  * @memberof cy
- * @method sortProductsByPriceLowToHigh
- * @description Sort products by price (low to high)
- */
-Cypress.Commands.add('sortProductsByPriceLowToHigh', () => {
-  cy.sortProducts('lohi');
-});
-
-/**
- * @memberof cy
- * @method sortProductsByPriceHighToLow
- * @description Sort products by price (high to low)
- */
-Cypress.Commands.add('sortProductsByPriceHighToLow', () => {
-  cy.sortProducts('hilo');
-});
-
-/**
- * @memberof cy
  * @method getProductPrices
  * @description Get all product prices as numbers
  * @returns {Array} Array of prices as numbers
@@ -53,27 +35,30 @@ Cypress.Commands.add('getProductPrices', () => {
 
 /**
  * @memberof cy
- * @method verifyPricesSortedLowToHigh
- * @description Verify products are sorted by price from low to high
+ * @method verifyPricesSorted
+ * @description Verify products are sorted by price in specified order
+ * @param {String} sortOrder - Sort order: 'lohi' (low to high) or 'hilo' (high to low)
  */
-Cypress.Commands.add('verifyPricesSortedLowToHigh', () => {
+Cypress.Commands.add('verifyPricesSorted', (sortOrder) => {
   cy.getProductPrices().then((prices) => {
-    const sortedPrices = [...prices].sort((a, b) => a - b);
-    expect(prices).to.deep.equal(sortedPrices);
-    cy.log('Prices are correctly sorted Low to High:', prices.join(' < '));
-  });
-});
+    let sortedPrices;
+    let logMessage;
+    let separator;
 
-/**
- * @memberof cy
- * @method verifyPricesSortedHighToLow
- * @description Verify products are sorted by price from high to low
- */
-Cypress.Commands.add('verifyPricesSortedHighToLow', () => {
-  cy.getProductPrices().then((prices) => {
-    const sortedPrices = [...prices].sort((a, b) => b - a);
+    if (sortOrder === 'lohi') {
+      sortedPrices = [...prices].sort((a, b) => a - b);
+      logMessage = 'Prices are correctly sorted Low to High:';
+      separator = ' < ';
+    } else if (sortOrder === 'hilo') {
+      sortedPrices = [...prices].sort((a, b) => b - a);
+      logMessage = 'Prices are correctly sorted High to Low:';
+      separator = ' > ';
+    } else {
+      throw new Error(`Invalid sort order: ${sortOrder}. Use 'lohi' or 'hilo'.`);
+    }
+
     expect(prices).to.deep.equal(sortedPrices);
-    cy.log('Prices are correctly sorted High to Low:', prices.join(' > '));
+    cy.log(logMessage, prices.join(separator));
   });
 });
 

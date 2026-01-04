@@ -114,12 +114,12 @@ This document explains how each assessment criterion is met in this project.
 4. **Custom Validation Commands**:
 
    ```javascript
-   cy.verifyPricesSortedLowToHigh();
-   cy.verifyPricesSortedHighToLow();
+   cy.verifyPricesSorted('lohi');  // Verify low to high
+   cy.verifyPricesSorted('hilo');  // Verify high to low
    ```
 
-   - **Innovation:** Complex validation logic encapsulated
-   - **Efficiency:** Mathematical sorting verification automated
+   - **Innovation:** Complex validation logic encapsulated with flexible parameter-based approach
+   - **Efficiency:** Mathematical sorting verification automated with single reusable method
 
 5. **No Hardcoded Waits**:
    - **Innovation:** Leverage Cypress automatic waiting
@@ -213,7 +213,7 @@ describe('SauceDemo - Login Tests', () => {
 **Precision in Assertions:**
 
 ```javascript
-cy.verifyPricesSortedLowToHigh(); // Not just visual check
+cy.verifyPricesSorted('lohi'); // Not just visual check
 // Actual implementation:
 cy.getProductPrices().then((prices) => {
   const sortedPrices = [...prices].sort((a, b) => a - b);

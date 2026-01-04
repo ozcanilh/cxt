@@ -25,8 +25,8 @@ describe('SauceDemo - Inventory Page Tests', () => {
         '\nExpected Behavior: Products should be displayed with lowest price first, ascending to highest price.' +
         '\n\nTest Script last modified by: Ozcan'
     );
-    cy.sortProductsByPriceLowToHigh();
-    cy.verifyPricesSortedLowToHigh();
+    cy.sortProducts('lohi');
+    cy.verifyPricesSorted('lohi');
   });
 
   it('Sort products by price - High to Low', () => {
@@ -42,7 +42,7 @@ describe('SauceDemo - Inventory Page Tests', () => {
         '\nExpected Behavior: Products should be displayed with highest price first, descending to lowest price.' +
         '\n\nTest Script last modified by: Ozcan'
     );
-    cy.sortProductsByPriceHighToLow();
-    cy.verifyPricesSortedHighToLow();
+    cy.sortProducts('hilo');
+    cy.verifyPricesSorted('hilo');
   });
 });
